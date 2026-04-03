@@ -1,1 +1,184 @@
-<p>dashboard works!!</p>
+<div class="dashboard">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Club Overview</h1>
+      <p class="page-subtitle">Welcome back, here's what's happening with your club today</p>
+    </div>
+  </div>
+
+  <!-- ROW 1: Next Match + Squad Summary -->
+  <div class="grid grid-cols-3">
+    <!-- Next Match (spans 2) -->
+    <mat-card class="card span-2">
+      <mat-card-content>
+        <div class="card-header-row">
+          <span class="card-label">Next Match</span>
+          <span class="badge-days">In 3 days</span>
+        </div>
+
+        <div class="match-row">
+          <div class="team home">
+            <div class="team-icon home-icon">
+              <mat-icon>shield</mat-icon>
+            </div>
+            <div>
+              <div class="team-name">FC United</div>
+              <div class="team-role">Home Team</div>
+            </div>
+          </div>
+
+          <span class="vs">VS</span>
+
+          <div class="team away">
+            <div>
+              <div class="team-name">City Rovers</div>
+              <div class="team-role">Away Team</div>
+            </div>
+            <div class="team-icon away-icon">
+              <mat-icon>shield</mat-icon>
+            </div>
+          </div>
+        </div>
+
+        <mat-divider class="match-divider" />
+
+        <div class="match-meta">
+          <div class="meta-item">
+            <span class="meta-label">Competition</span>
+            <span class="meta-value">Premier League</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Date &amp; Time</span>
+            <span class="meta-value">Feb 14, 15:00</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Venue</span>
+            <span class="meta-value">Home Stadium</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Squad Availability</span>
+            <div class="availability">
+              <mat-progress-bar mode="determinate" value="85" color="primary" />
+              <span class="avail-pct">85%</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Squad Summary -->
+    <mat-card class="card">
+      <mat-card-content>
+        <div class="card-label mb-16">Squad Summary</div>
+        @for (item of squadSummary; track item.label) {
+          <div class="squad-row">
+            <div class="squad-icon" [ngClass]="item.iconClass">
+              <mat-icon>{{ item.icon }}</mat-icon>
+            </div>
+            <div class="squad-info">
+              <div class="squad-label">{{ item.label }}</div>
+              <div class="squad-sub">{{ item.sub }}</div>
+            </div>
+            <span class="squad-count" [ngClass]="item.countClass">{{ item.count }}</span>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- ROW 2: Training + Form + Alerts -->
+  <div class="grid grid-cols-3">
+    <!-- This Week's Training -->
+    <mat-card class="card">
+      <mat-card-content>
+        <div class="card-label mb-16">This Week's Training</div>
+        @for (session of trainingSessions; track session.day) {
+          <div class="training-row">
+            <div class="training-info">
+              <div class="training-day">{{ session.day }}</div>
+              <div class="training-title">{{ session.title }}</div>
+              <div class="training-time">{{ session.time }}</div>
+            </div>
+            <span class="intensity-badge" [ngClass]="getIntensityClass(session.intensity)">
+              {{ session.intensity }}
+            </span>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Team Form -->
+    <mat-card class="card">
+      <mat-card-content>
+        <div class="card-label mb-16">Team Form</div>
+
+        <div class="form-badges">
+          @for (result of teamForm; track $index) {
+            <span class="form-badge" [ngClass]="getFormClass(result)">{{ result }}</span>
+          }
+        </div>
+
+        <div class="form-stats">
+          <div class="form-stat">
+            <div class="form-stat-label">Goals Scored</div>
+            <div class="form-stat-value green">12</div>
+          </div>
+          <div class="form-stat">
+            <div class="form-stat-label">Goals Conceded</div>
+            <div class="form-stat-value red">5</div>
+          </div>
+        </div>
+
+        <div class="winrate">
+          <div class="winrate-header">
+            <span class="winrate-label">Win Rate</span>
+            <span class="winrate-pct">60%</span>
+          </div>
+          <mat-progress-bar mode="determinate" value="60" color="primary" />
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Important Alerts -->
+    <mat-card class="card">
+      <mat-card-content>
+        <div class="card-label mb-16">Important Alerts</div>
+        @for (alert of alerts; track alert.title) {
+          <div class="alert-row" [ngClass]="'alert-' + alert.type">
+            <mat-icon class="alert-icon">{{ alert.icon }}</mat-icon>
+            <div class="alert-content">
+              <div class="alert-title">{{ alert.title }}</div>
+              <div class="alert-desc">{{ alert.description }}</div>
+            </div>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- ROW 3: Statistical Snapshot -->
+  <div class="grid grid-cols-4">
+    @for (stat of statCards; track stat.label) {
+      <mat-card class="card stat-card">
+        <mat-card-content>
+          <div class="stat-header">
+            <span class="stat-label">{{ stat.label }}</span>
+            <mat-icon class="stat-icon" [style.color]="stat.color">{{ stat.icon }}</mat-icon>
+          </div>
+          <div class="stat-value">{{ stat.value }}</div>
+          <div
+            class="stat-delta"
+            [class.positive]="stat.positive"
+            [class.negative]="!stat.positive"
+          >
+            <mat-icon>{{ stat.positive ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+            {{ stat.delta }}
+          </div>
+          <div class="stat-bar" [style.background]="stat.color + '33'">
+            <div class="stat-bar-fill" [style.background]="stat.color" [style.width]="'65%'"></div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</div>
