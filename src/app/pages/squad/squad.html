@@ -1,1 +1,85 @@
-<p>squad works!</p>
+<div class="squad-page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Squad</h1>
+      <p class="page-subtitle">Alto do Moinho - Senior</p>
+    </div>
+  </div>
+
+  <mat-card class="table-card">
+    <mat-card-content>
+      <table class="squad-table">
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Position</th>
+            <th>Age</th>
+            <th>Nationality</th>
+            <th>Fitness</th>
+            <th>Form</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (member of filteredMembers; track member.id) {
+            <tr class="squad-row">
+              <td class="player-cell">
+                <div class="player-info">
+                  <a class="player-name-link" [routerLink]="['/players', toSlug(member.name)]">
+                    {{ member.name }}
+                  </a>
+                </div>
+                <div
+                  class="info-btn"
+                  (mouseenter)="onInfoEnter($event, member)"
+                  (mouseleave)="onInfoLeave()"
+                >
+                  <mat-icon class="info-icon">info_outline</mat-icon>
+                </div>
+              </td>
+
+              <td class="text-muted">{{ member.position }}</td>
+              <td class="text-muted">{{ member.age }}</td>
+              <td class="text-muted">{{ member.nationalityFlag }} {{ member.nationality }}</td>
+
+              <td class="fitness-cell">
+                @if (member.fitness !== undefined) {
+                  <div class="fitness-bar-wrap">
+                    <div class="fitness-bar">
+                      <div
+                        class="fitness-fill"
+                        [class]="getFitnessColor(member.fitness)"
+                        [style.width.%]="member.fitness"
+                      ></div>
+                    </div>
+                    <span class="fitness-pct">{{ member.fitness }}%</span>
+                  </div>
+                } @else {
+                  <span class="text-muted">N/A</span>
+                }
+              </td>
+
+              <td>
+                @if (member.form && member.form.length > 0) {
+                  <div class="form-badges">
+                    @for (r of member.form; track $index) {
+                      <span class="form-badge" [ngClass]="getFormClass(r)">{{ r }}</span>
+                    }
+                  </div>
+                } @else {
+                  <span class="text-muted">N/A</span>
+                }
+              </td>
+
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(member.status)">
+                  {{ member.status }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

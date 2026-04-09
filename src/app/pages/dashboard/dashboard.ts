@@ -31,6 +31,14 @@ interface Alert {
   type: 'warn' | 'danger' | 'info';
 }
 
+interface AgendaItem {
+  date: string;
+  location: string;
+  type: 'C' | 'F';
+  result?: { home: number; away: number; win: boolean };
+  time?: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   imports: [
@@ -47,6 +55,25 @@ interface Alert {
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
+  items: AgendaItem[] = [
+    {
+      date: 'Sab 01/01',
+      location: 'Pinhal de Frades',
+      type: 'C',
+      result: { home: 29, away: 28, win: true },
+    },
+    {
+      date: 'Sab 07/01',
+      location: 'Pinhal de Frades',
+      type: 'F',
+      result: { home: 29, away: 28, win: false },
+    },
+    { date: 'Sab 13/01', location: 'Pinhal de Frades', type: 'C', time: '16:00' },
+    { date: 'Sab 20/01', location: 'Pinhal de Frades', type: 'C', time: '21:00' },
+    { date: 'Dom 01/01', location: 'Pinhal de Frades', type: 'C', time: '17:00' },
+    { date: 'Sab 01/01', location: 'Pinhal de Frades', type: 'C', time: '16:00' },
+  ];
+
   teamForm = ['W', 'W', 'D', 'W', 'L'];
 
   squadSummary = [

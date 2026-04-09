@@ -1,8 +1,8 @@
 <div class="dashboard">
   <div class="page-header">
     <div>
-      <h1 class="page-title">Club Overview</h1>
-      <p class="page-subtitle">Welcome back, here's what's happening with your club today</p>
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-subtitle">Alto do Moinho</p>
     </div>
   </div>
 
@@ -69,19 +69,28 @@
     <!-- Squad Summary -->
     <mat-card class="card">
       <mat-card-content>
-        <div class="card-label mb-16">Squad Summary</div>
-        @for (item of squadSummary; track item.label) {
-          <div class="squad-row">
-            <div class="squad-icon" [ngClass]="item.iconClass">
-              <mat-icon>{{ item.icon }}</mat-icon>
+        <div class="card-label">Agenda</div>
+
+        <div class="agenda-list">
+          @for (item of items; track $index) {
+            <div class="agenda-row">
+              <span class="date">{{ item.date }}</span>
+              <span class="location">{{ item.location }}</span>
+              <span class="type">{{ item.type }}</span>
+
+              @if (item.result) {
+                <span class="result">
+                  <span class="dot" [class.win]="item.result.win" [class.loss]="!item.result.win"
+                    >●</span
+                  >
+                  {{ item.result.home }} - {{ item.result.away }}
+                </span>
+              } @else {
+                <span class="time">{{ item.time }}</span>
+              }
             </div>
-            <div class="squad-info">
-              <div class="squad-label">{{ item.label }}</div>
-              <div class="squad-sub">{{ item.sub }}</div>
-            </div>
-            <span class="squad-count" [ngClass]="item.countClass">{{ item.count }}</span>
-          </div>
-        }
+          }
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
@@ -142,14 +151,17 @@
     <!-- Important Alerts -->
     <mat-card class="card">
       <mat-card-content>
-        <div class="card-label mb-16">Important Alerts</div>
-        @for (alert of alerts; track alert.title) {
-          <div class="alert-row" [ngClass]="'alert-' + alert.type">
-            <mat-icon class="alert-icon">{{ alert.icon }}</mat-icon>
-            <div class="alert-content">
-              <div class="alert-title">{{ alert.title }}</div>
-              <div class="alert-desc">{{ alert.description }}</div>
+        <div class="card-label mb-16">Squad Summary</div>
+        @for (item of squadSummary; track item.label) {
+          <div class="squad-row">
+            <div class="squad-icon" [ngClass]="item.iconClass">
+              <mat-icon>{{ item.icon }}</mat-icon>
             </div>
+            <div class="squad-info">
+              <div class="squad-label">{{ item.label }}</div>
+              <div class="squad-sub">{{ item.sub }}</div>
+            </div>
+            <span class="squad-count" [ngClass]="item.countClass">{{ item.count }}</span>
           </div>
         }
       </mat-card-content>

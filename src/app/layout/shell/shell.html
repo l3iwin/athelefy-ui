@@ -1,70 +1,63 @@
 <div class="shell">
-    <!-- TOP NAV -->
-    <mat-toolbar class="topbar">
+  <!-- TOP NAV -->
+  <mat-toolbar class="topbar">
     <!-- Brand -->
     <a routerLink="/dashboard" class="brand">
-        <div class="brand-icon">
+      <div class="brand-icon">
         <mat-icon>shield</mat-icon>
-        </div>
-        <span class="brand-name">ClubManager</span>
+      </div>
+      <!-- <span class="brand-name">ClubManager</span> -->
     </a>
 
     <!-- Nav links -->
     <nav class="nav-links">
-        @for (item of navItems; track item.route) {
-        <a
-            class="nav-link"
-            [routerLink]="item.route"
-            routerLinkActive="active"
-        >{{ item.label }}</a>
-        }
+      @for (item of navItems; track item.route) {
+        <a class="nav-link" [routerLink]="item.route" routerLinkActive="active">{{ item.label }}</a>
+      }
     </nav>
 
     <span class="spacer"></span>
 
     <!-- Actions -->
     <div class="topbar-actions">
-        <button mat-icon-button matTooltip="Notificações"
-        [matBadge]="'3'" matBadgeColor="warn" matBadgeSize="small">
+      <button
+        mat-icon-button
+        matTooltip="Notificações"
+        [matBadge]="'3'"
+        matBadgeColor="warn"
+        matBadgeSize="small"
+      >
         <mat-icon>notifications</mat-icon>
-        </button>
+      </button>
 
-        <button mat-icon-button matTooltip="Mensagens">
+      <button mat-icon-button matTooltip="Mensagens">
         <mat-icon>chat_bubble_outline</mat-icon>
-        </button>
+      </button>
 
-        <button mat-icon-button matTooltip="Favoritos">
-        <mat-icon>favorite_border</mat-icon>
-        </button>
-
-        <button mat-icon-button matTooltip="Definições" routerLink="/admin">
-        <mat-icon>settings</mat-icon>
-        </button>
-
-        <button mat-icon-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
+      <button mat-icon-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
         <span class="avatar">JD</span>
-        </button>
+      </button>
 
-        <mat-menu #userMenu="matMenu">
+      <mat-menu #userMenu="matMenu">
         <button mat-menu-item>
-            <mat-icon>person</mat-icon>
-            <span>Perfil</span>
+          <mat-icon>person</mat-icon>
+          <span>Perfil</span>
         </button>
         <button mat-menu-item>
-            <mat-icon>settings</mat-icon>
-            <span>Definições</span>
+          <mat-icon>settings</mat-icon>
+          <span>Definições</span>
         </button>
         <mat-divider />
         <button mat-menu-item>
-            <mat-icon>logout</mat-icon>
-            <span>Sair</span>
+          <mat-icon>logout</mat-icon>
+          <span>Sair</span>
         </button>
-        </mat-menu>
+      </mat-menu>
     </div>
-    </mat-toolbar>
+  </mat-toolbar>
 
-    <!-- PAGE CONTENT -->
-    <main class="content">
+  <!-- PAGE CONTENT -->
+  <main class="content">
     <router-outlet />
-    </main>
+  </main>
 </div>

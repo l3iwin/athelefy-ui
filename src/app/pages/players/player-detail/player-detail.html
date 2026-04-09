@@ -1,0 +1,385 @@
+@if (player) {
+  <div class="player-page">
+    <!-- HEADER -->
+    <div class="player-header">
+      <div class="header-left">
+        <a routerLink="/squad" class="back-btn">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
+        <div class="player-avatar">{{ player.avatar }}</div>
+        <div class="player-identity">
+          <h1 class="player-name">{{ player.name }}</h1>
+          <div class="player-meta">
+            {{ player.position }} • {{ player.age }} years old •
+            <span class="nationality">{{ player.nationalityFlag }} {{ player.nationality }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <mat-select [(ngModel)]="selectedSeason" class="header-select">
+          <mat-option value="2023/24">2023/24 Season</mat-option>
+          <mat-option value="2022/23">2022/23 Season</mat-option>
+        </mat-select>
+        <mat-select [(ngModel)]="selectedCompetition" class="header-select">
+          <mat-option value="all">All Competitions</mat-option>
+          <mat-option value="league">League</mat-option>
+          <mat-option value="cup">Cup</mat-option>
+        </mat-select>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <mat-tab-group animationDuration="150ms" class="player-tabs">
+      <!-- TAB 1: DADOS PESSOAIS -->
+      <mat-tab label="Dados Pessoais">
+        <div class="tab-page">
+          <div class="personal-layout">
+            <!-- Personal Data -->
+            <mat-card class="card">
+              <mat-card-content>
+                <div class="section-title">Dados Pessoais</div>
+                <div class="detail-grid">
+                  <div class="detail-row">
+                    <span class="detail-label">Nome Completo</span>
+                    <span class="detail-value">{{ player.fullName }}</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Data de Nascimento</span>
+                    <span class="detail-value">{{ player.dateOfBirth }}</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Idade</span>
+                    <span class="detail-value">{{ player.age }} anos</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Nacionalidade</span>
+                    <span class="detail-value"
+                      >{{ player.nationalityFlag }} {{ player.nationality }}</span
+                    >
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Altura</span>
+                    <span class="detail-value">{{ player.height }}</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Peso</span>
+                    <span class="detail-value">{{ player.weight }}</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Pé Preferido</span>
+                    <span class="detail-value">{{ player.preferredFoot }}</span>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- Contract -->
+            <mat-card class="card">
+              <mat-card-content>
+                <div class="section-title">Contrato</div>
+                <div class="detail-grid">
+                  <div class="detail-row">
+                    <span class="detail-label">Início</span>
+                    <span class="detail-value">{{ player.contractStart }}</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Fim</span>
+                    <span class="detail-value">{{ player.contractEnd }}</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Tempo Restante</span>
+                    <span class="detail-value highlight">{{ player.timeRemaining }}</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Número</span>
+                    <span class="detail-value">#{{ player.number }}</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Estatuto</span>
+                    <span class="squad-status-badge">{{ player.squadStatus }}</span>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- Career -->
+            <mat-card class="card career-card">
+              <mat-card-content>
+                <div class="section-title">Historial de Carreira</div>
+                @for (entry of player.career; track entry.club) {
+                  <div class="career-row">
+                    <div class="career-icon">
+                      <mat-icon>shield</mat-icon>
+                    </div>
+                    <div class="career-info">
+                      <div class="career-club">{{ entry.club }}</div>
+                      <div class="career-period">{{ entry.period }}</div>
+                      <div class="career-stats">
+                        {{ entry.appearances }} jogos • {{ entry.goals }} golos
+                      </div>
+                    </div>
+                  </div>
+                }
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- TAB 2: ESTATÍSTICAS -->
+      <mat-tab label="Estatísticas">
+        <div class="tab-page">
+          <!-- Overview Cards -->
+          <div class="grid grid-cols-4">
+            <mat-card class="card overview-card">
+              <mat-card-content>
+                <div class="overview-top">
+                  <div class="overview-icon blue"><mat-icon>schedule</mat-icon></div>
+                  <span class="overview-badge">{{ player.minutesPlayedPct }}</span>
+                </div>
+                <div class="overview-label">Minutes Played</div>
+                <div class="overview-value">{{ player.minutesPlayed }}</div>
+                <div class="overview-sub">{{ player.appearances }} appearances</div>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="card overview-card">
+              <mat-card-content>
+                <div class="overview-top">
+                  <div class="overview-icon green"><mat-icon>location_on</mat-icon></div>
+                  <span class="overview-badge">{{ player.primaryPosition }}</span>
+                </div>
+                <div class="overview-label">Primary Position</div>
+                <div class="overview-value">{{ player.primaryPosition }}</div>
+                <div class="overview-sub">{{ player.positionFull }}</div>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="card overview-card">
+              <mat-card-content>
+                <div class="overview-top">
+                  <div class="overview-icon yellow"><mat-icon>star</mat-icon></div>
+                  <span class="overview-badge">1st</span>
+                </div>
+                <div class="overview-label">Squad Role</div>
+                <div class="overview-value">{{ player.squadRole }}</div>
+                <div class="overview-sub">{{ player.squadRoleDesc }}</div>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="card overview-card">
+              <mat-card-content>
+                <div class="overview-top">
+                  <div class="overview-icon orange"><mat-icon>trending_up</mat-icon></div>
+                  <span class="overview-badge rating-high">{{ player.averageRating }}</span>
+                </div>
+                <div class="overview-label">Average Rating</div>
+                <div class="overview-value">{{ player.averageRating }}</div>
+                <div class="overview-sub">League avg: {{ player.leagueAvgRating }}</div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <!-- Stats Grid -->
+          <div class="grid grid-cols-3">
+            <!-- Offensive -->
+            <mat-card class="card">
+              <mat-card-content>
+                <div class="section-title">Offensive Data</div>
+                <div class="stat-list">
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap green"><mat-icon>sports_soccer</mat-icon></div>
+                    <span class="stat-name">Goals</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.goals }}</span>
+                      <span class="stat-sub">{{ player.goalsPer90 }} per 90'</span>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap blue"><mat-icon>assistant</mat-icon></div>
+                    <span class="stat-name">Assists</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.assists }}</span>
+                      <span class="stat-sub">{{ player.assistsPer90 }} per 90'</span>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap purple"><mat-icon>show_chart</mat-icon></div>
+                    <span class="stat-name">Expected Goals (xG)</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.xG }}</span>
+                      <span class="stat-sub">{{ player.xGPer90 }} per 90'</span>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap indigo"><mat-icon>edit</mat-icon></div>
+                    <span class="stat-name">Expected Assists (xA)</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.xA }}</span>
+                      <span class="stat-sub">{{ player.xAPer90 }} per 90'</span>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap orange"><mat-icon>sports</mat-icon></div>
+                    <span class="stat-name">Shots</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.shots }}</span>
+                      <span class="stat-sub">{{ player.shotsOnTargetPct }} on target</span>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- Defensive -->
+            <mat-card class="card">
+              <mat-card-content>
+                <div class="section-title">Defensive Data</div>
+                <div class="stat-list">
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap red"><mat-icon>security</mat-icon></div>
+                    <span class="stat-name">Tackles</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.tackles }}</span>
+                      <span class="stat-sub">{{ player.tacklesPer90 }} per 90'</span>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap yellow"><mat-icon>pan_tool</mat-icon></div>
+                    <span class="stat-name">Interceptions</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.interceptions }}</span>
+                      <span class="stat-sub">{{ player.interceptionsPer90 }} per 90'</span>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap blue"><mat-icon>people</mat-icon></div>
+                    <span class="stat-name">Duels Won</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.duelsWon }}</span>
+                      <span class="stat-sub">{{ player.duelsWonPct }} success</span>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap orange"><mat-icon>compress</mat-icon></div>
+                    <span class="stat-name">Pressures</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.pressures }}</span>
+                      <span class="stat-sub">{{ player.pressuresPer90 }} per 90'</span>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap green"><mat-icon>directions_run</mat-icon></div>
+                    <span class="stat-name">Recoveries</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.recoveries }}</span>
+                      <span class="stat-sub">{{ player.recoveriesPer90 }} per 90'</span>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- Passing -->
+            <mat-card class="card">
+              <mat-card-content>
+                <div class="section-title">Passing Data</div>
+                <div class="stat-list">
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap blue"><mat-icon>percent</mat-icon></div>
+                    <span class="stat-name">Pass Accuracy</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.passAccuracy }}</span>
+                      <span class="stat-sub">{{ player.passesCompleted }} completed</span>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap green"><mat-icon>trending_up</mat-icon></div>
+                    <span class="stat-name">Progressive Passes</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.progressivePasses }}</span>
+                      <span class="stat-sub">{{ player.progressivePassesPer90 }} per 90'</span>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap yellow"><mat-icon>vpn_key</mat-icon></div>
+                    <span class="stat-name">Key Passes</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.keyPasses }}</span>
+                      <span class="stat-sub">{{ player.keyPassesPer90 }} per 90'</span>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap purple"><mat-icon>swap_horiz</mat-icon></div>
+                    <span class="stat-name">Passes per Game</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.passesPerGame }}</span>
+                      <span class="stat-sub">{{ player.passesPerGameCompleted }} completed</span>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-icon-wrap red"><mat-icon>flag</mat-icon></div>
+                    <span class="stat-name">Final Third Passes</span>
+                    <div class="stat-right">
+                      <span class="stat-val">{{ player.finalThirdPasses }}</span>
+                      <span class="stat-sub">{{ player.finalThirdPassesPer90 }} per 90'</span>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <!-- Match Breakdown -->
+          <mat-card class="card">
+            <mat-card-content>
+              <div class="section-title mb-16">Match-by-Match Breakdown</div>
+              <table class="match-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Opponent</th>
+                    <th>Result</th>
+                    <th>Minutes</th>
+                    <th>Goals</th>
+                    <th>Assists</th>
+                    <th>Shots</th>
+                    <th>Rating</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (match of player.matches; track match.date) {
+                    <tr>
+                      <td class="text-muted">{{ match.date }}</td>
+                      <td class="font-medium">{{ match.opponent }}</td>
+                      <td>
+                        <span class="result-badge" [ngClass]="getResultClass(match.resultType)">
+                          {{ match.result }}
+                        </span>
+                      </td>
+                      <td class="text-muted">{{ match.minutes }}</td>
+                      <td class="font-bold">{{ match.goals }}</td>
+                      <td class="font-bold">{{ match.assists }}</td>
+                      <td class="text-muted">{{ match.shots }}</td>
+                      <td>
+                        <span class="rating" [ngClass]="getRatingClass(match.rating)">{{
+                          match.rating
+                        }}</span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+} @else {
+  <div class="not-found">
+    <mat-icon>person_off</mat-icon>
+    <p>Jogador não encontrado.</p>
+    <a routerLink="/squad" mat-button>Voltar ao Plantel</a>
+  </div>
+}
