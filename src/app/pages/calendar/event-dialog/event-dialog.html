@@ -1,0 +1,39 @@
+<div class="dialog-header" [ngClass]="'header-' + data.type">
+  <div class="header-icon" [ngClass]="'icon-' + data.type">
+    <mat-icon>{{ getIcon(data.type) }}</mat-icon>
+  </div>
+  <div class="header-info">
+    <div class="header-title">{{ data.title }}</div>
+    <div class="header-time">{{ data.timeStart }} - {{ data.timeEnd }}</div>
+  </div>
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div class="dialog-body">
+  @if (data.location) {
+    <div class="detail-row">
+      <mat-icon>location_on</mat-icon>
+      <span>{{ data.location }}</span>
+    </div>
+  }
+  @if (data.squad) {
+    <div class="detail-row">
+      <mat-icon>groups</mat-icon>
+      <span>{{ data.squad }}</span>
+    </div>
+  }
+  @if (data.staff) {
+    <div class="detail-row">
+      <mat-icon>person</mat-icon>
+      <span>{{ data.staff }}</span>
+    </div>
+  }
+</div>
+
+<div class="dialog-actions">
+  <button class="action-btn edit-btn"><mat-icon>edit</mat-icon> Edit</button>
+  <button class="action-btn duplicate-btn"><mat-icon>content_copy</mat-icon> Duplicate</button>
+  <button class="action-btn delete-btn"><mat-icon>delete</mat-icon> Delete</button>
+</div>

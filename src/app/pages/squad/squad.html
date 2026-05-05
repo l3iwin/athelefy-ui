@@ -25,7 +25,11 @@
             <tr class="squad-row">
               <td class="player-cell">
                 <div class="player-info">
-                  <a class="player-name-link" [routerLink]="['/players', toSlug(member.name)]">
+                  <a
+                    class="player-name-link"
+                    [routerLink]="['/players', toSlug(member.name)]"
+                    [attr.data-text]="member.name"
+                  >
                     {{ member.name }}
                   </a>
                 </div>
