@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { EventDialog } from './event-dialog/event-dialog';
+import { AddEventDialog } from './add-event-dialog/add-event-dialog';
 
 export type EventType = 'match' | 'training' | 'meeting' | 'assessment';
 
@@ -403,5 +404,12 @@ export class Calendar {
       return first.toLocaleString('en-US', { month: 'long', year: 'numeric' });
     }
     return `${first.toLocaleString('en-US', { month: 'short' })} - ${last.toLocaleString('en-US', { month: 'short', year: 'numeric' })}`;
+  }
+
+  openAddEvent(): void {
+    const ref = this.dialog.open(AddEventDialog, { width: '480px' });
+    ref.afterClosed().subscribe((event: CalendarEvent) => {
+      if (event) this.events = [...this.events, event];
+    });
   }
 }
