@@ -1,1 +1,226 @@
-<p>training works!</p>
+<div class="training-page">
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Training Exercises</h1>
+      <p class="page-subtitle">Manage your exercise library and training drills</p>
+    </div>
+    <div class="header-actions">
+      <button class="filter-btn"><mat-icon>filter_list</mat-icon> Filters</button>
+      <div class="view-toggle">
+        <button class="toggle-btn" [class.active]="viewMode === 'grid'" (click)="viewMode = 'grid'">
+          <mat-icon>grid_view</mat-icon> Grid
+        </button>
+        <button class="toggle-btn" [class.active]="viewMode === 'list'" (click)="viewMode = 'list'">
+          <mat-icon>view_list</mat-icon> List
+        </button>
+      </div>
+      <button class="add-btn"><mat-icon>add</mat-icon> New Exercise</button>
+    </div>
+  </div>
+
+  <!-- CATEGORY FILTERS -->
+  <div class="category-filters">
+    @for (f of filters; track f.key) {
+      <button
+        class="cat-filter-btn"
+        [class.active]="activeFilter() === f.key"
+        (click)="setFilter(f.key)"
+      >
+        {{ f.label }}
+      </button>
+    }
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="training-layout" [class.sidebar-open]="selectedExercise()">
+    <!-- EXERCISES GRID -->
+    <div class="exercises-grid" [class.list-mode]="viewMode === 'list'">
+      @for (exercise of filteredExercises; track exercise.id) {
+        <mat-card
+          class="exercise-card"
+          [class.selected]="selectedExercise()?.id === exercise.id"
+          (click)="selectExercise(exercise)"
+        >
+          <mat-card-content>
+            <div class="card-top">
+              <div class="exercise-icon" [style.background]="exercise.iconBg">
+                <mat-icon>{{ exercise.icon }}</mat-icon>
+              </div>
+              <button class="favorite-btn" (click)="toggleFavorite($event, exercise)">
+                <mat-icon [class.favorited]="exercise.favorite">
+                  {{ exercise.favorite ? 'favorite' : 'favorite_border' }}
+                </mat-icon>
+              </button>
+            </div>
+
+            <div class="exercise-title">{{ exercise.title }}</div>
+
+            <div class="exercise-tags">
+              <span class="tag" [ngClass]="getCategoryClass(exercise.category)">
+                {{ getCategoryLabel(exercise.category) }}
+              </span>
+              <span class="tag" [ngClass]="getIntensityClass(exercise.intensity)">
+                {{ getIntensityLabel(exercise.intensity) }}
+              </span>
+            </div>
+
+            <div class="exercise-meta">
+              <div class="meta-row">
+                <mat-icon>groups</mat-icon>
+                <span>{{ exercise.players }}</span>
+              </div>
+              <div class="meta-row">
+                <mat-icon>schedule</mat-icon>
+                <span>{{ exercise.duration }}</span>
+              </div>
+              <div class="meta-row">
+                <mat-icon>track_changes</mat-icon>
+                <span>{{ exercise.objective }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+
+    <!-- SIDEBAR DETAIL -->
+    @if (selectedExercise(); as ex) {
+      <div class="sidebar">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header">
+          <div class="sidebar-icon" [style.background]="ex.iconBg">
+            <mat-icon>{{ ex.icon }}</mat-icon>
+          </div>
+          <div class="sidebar-identity">
+            <div class="sidebar-title">{{ ex.title }}</div>
+            <div class="sidebar-tags">
+              <span class="tag" [ngClass]="getCategoryClass(ex.category)">
+                {{ getCategoryLabel(ex.category) }}
+              </span>
+              <span class="tag" [ngClass]="getIntensityClass(ex.intensity)">
+                {{ getIntensityLabel(ex.intensity) }}
+              </span>
+            </div>
+          </div>
+          <button class="close-btn" (click)="closeSidebar()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <!-- Edit Button -->
+        <div class="sidebar-actions">
+          <button class="edit-btn"><mat-icon>edit</mat-icon> Edit Exercise</button>
+          <button class="more-btn">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+        </div>
+
+        <!-- Tabs -->
+        <mat-tab-group animationDuration="0" class="sidebar-tabs">
+          <mat-tab label="Description">
+            <div class="tab-content">
+              <!-- Overview -->
+              <div class="section-title">Exercise Overview</div>
+              <div class="overview-grid">
+                <div class="overview-item">
+                  <mat-icon>groups</mat-icon>
+                  <div>
+                    <div class="overview-label">Players</div>
+                    <div class="overview-value">{{ ex.players }}</div>
+                  </div>
+                </div>
+                <div class="overview-item">
+                  <mat-icon>schedule</mat-icon>
+                  <div>
+                    <div class="overview-label">Duration</div>
+                    <div class="overview-value">{{ ex.duration }}</div>
+                  </div>
+                </div>
+                <div class="overview-item">
+                  <mat-icon>grid_on</mat-icon>
+                  <div>
+                    <div class="overview-label">Field Setup</div>
+                    <div class="overview-value">{{ ex.fieldSetup }}</div>
+                  </div>
+                </div>
+                <div class="overview-item">
+                  <mat-icon>track_changes</mat-icon>
+                  <div>
+                    <div class="overview-label">Objective</div>
+                    <div class="overview-value">{{ ex.objective }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <mat-divider class="divider" />
+
+              <!-- Description -->
+              <div class="section-title">Drill Explanation</div>
+              @for (para of ex.description.split('\n\n'); track $index) {
+                <p class="description-text">{{ para }}</p>
+              }
+
+              <mat-divider class="divider" />
+
+              <!-- Coaching Points -->
+              <div class="section-title">Coaching Points</div>
+              <div class="coaching-list">
+                @for (point of ex.coachingPoints; track $index) {
+                  <div class="coaching-row">
+                    <mat-icon class="check-icon">check_circle</mat-icon>
+                    <span>{{ point }}</span>
+                  </div>
+                }
+              </div>
+
+              <mat-divider class="divider" />
+
+              <!-- Variations -->
+              <div class="section-title">Variations</div>
+              <div class="variations-list">
+                @for (v of ex.variations; track v.title) {
+                  <div class="variation-card">
+                    <div class="variation-title">{{ v.title }}</div>
+                    <div class="variation-desc">{{ v.description }}</div>
+                  </div>
+                }
+              </div>
+
+              <mat-divider class="divider" />
+
+              <!-- Equipment -->
+              <div class="section-title">Equipment Required</div>
+              <div class="equipment-list">
+                @for (item of ex.equipment; track item) {
+                  <span class="equipment-badge">
+                    <mat-icon>circle</mat-icon>
+                    {{ item }}
+                  </span>
+                }
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Tactical Focus">
+            <div class="tab-content">
+              <p class="text-muted">Tactical details em breve.</p>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Physical Load">
+            <div class="tab-content">
+              <p class="text-muted">Physical load em breve.</p>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Sessions">
+            <div class="tab-content">
+              <p class="text-muted">Sessions em breve.</p>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    }
+  </div>
+</div>
