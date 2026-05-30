@@ -1,1 +1,127 @@
-<p>statistics works!</p>
+<div class="stats-page">
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Team Statistics</h1>
+      <p class="page-subtitle">Performance analysis and team metrics</p>
+    </div>
+    <div class="header-actions">
+      <mat-select [(ngModel)]="selectedSeason" class="header-select">
+        <mat-option value="2023/24">2023/24 Season</mat-option>
+        <mat-option value="2022/23">2022/23 Season</mat-option>
+      </mat-select>
+      <mat-select [(ngModel)]="selectedCompetition" class="header-select">
+        <mat-option value="all">All Competitions</mat-option>
+        <mat-option value="league">League</mat-option>
+        <mat-option value="cup">Cup</mat-option>
+      </mat-select>
+    </div>
+  </div>
+
+  <!-- PERFORMANCE OVERVIEW -->
+  <div class="section-label">Performance Overview</div>
+  <div class="grid grid-cols-4">
+    @for (card of overviewCards; track card.label) {
+      <mat-card class="card overview-card">
+        <mat-card-content>
+          <div class="overview-top">
+            <div class="overview-icon" [style.background]="card.iconBg">
+              <mat-icon [style.color]="card.iconColor">{{ card.icon }}</mat-icon>
+            </div>
+            <span
+              class="overview-delta"
+              [class.positive]="card.positive"
+              [class.negative]="!card.positive"
+            >
+              {{ card.delta }}
+            </span>
+          </div>
+          <div class="overview-label">{{ card.label }}</div>
+          <div class="overview-value">{{ card.value }}</div>
+          <div class="overview-sub">{{ card.sub }}</div>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+
+  <!-- ATTACKING + DEFENSIVE -->
+  <div class="grid grid-cols-2">
+    <mat-card class="card">
+      <mat-card-content>
+        <div class="section-title">Attacking Metrics</div>
+        <div class="stat-list">
+          @for (stat of attackingStats; track stat.label) {
+            <div class="stat-row">
+              <div class="stat-icon" [style.background]="stat.iconBg">
+                <mat-icon [style.color]="stat.iconColor">{{ stat.icon }}</mat-icon>
+              </div>
+              <span class="stat-label">{{ stat.label }}</span>
+              <div class="stat-right">
+                <span class="stat-value">{{ stat.value }}</span>
+                <span class="stat-sub">{{ stat.sub }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="card">
+      <mat-card-content>
+        <div class="section-title">Defensive Metrics</div>
+        <div class="stat-list">
+          @for (stat of defensiveStats; track stat.label) {
+            <div class="stat-row">
+              <div class="stat-icon" [style.background]="stat.iconBg">
+                <mat-icon [style.color]="stat.iconColor">{{ stat.icon }}</mat-icon>
+              </div>
+              <span class="stat-label">{{ stat.label }}</span>
+              <div class="stat-right">
+                <span class="stat-value">{{ stat.value }}</span>
+                <span class="stat-sub">{{ stat.sub }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- POSSESSION + GOALS TREND -->
+  <div class="grid grid-cols-2">
+    <mat-card class="card">
+      <mat-card-content>
+        <div class="section-title">Possession and Build-Up</div>
+        <div class="stat-list">
+          @for (stat of possessionStats; track stat.label) {
+            <div class="stat-row">
+              <div class="stat-icon" [style.background]="stat.iconBg">
+                <mat-icon [style.color]="stat.iconColor">{{ stat.icon }}</mat-icon>
+              </div>
+              <span class="stat-label">{{ stat.label }}</span>
+              <div class="stat-right">
+                <span class="stat-value">{{ stat.value }}</span>
+                <span class="stat-sub">{{ stat.sub }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="card">
+      <mat-card-content>
+        <div class="section-title">Goals Trend</div>
+        <div echarts [options]="goalsTrendOption" class="chart"></div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- BAR CHART -->
+  <mat-card class="card">
+    <mat-card-content>
+      <div class="section-title">Performance vs League Average</div>
+      <div echarts [options]="barChartOption" class="chart chart-tall"></div>
+    </mat-card-content>
+  </mat-card>
+</div>
