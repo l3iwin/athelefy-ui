@@ -21,32 +21,32 @@
           </tr>
         </thead>
         <tbody>
-          @for (member of filteredMembers; track member.id) {
+          @for (player of team.players; track player.id) {
             <tr class="squad-row">
               <td class="player-cell">
                 <div class="player-info">
                   <a
                     class="player-name-link"
-                    [routerLink]="['/players', toSlug(member.name)]"
-                    [attr.data-text]="member.name"
+                    [routerLink]="['/players', toSlug(player.fullName)]"
+                    [attr.data-text]="player.fullName"
                   >
-                    {{ member.name }}
+                    {{ player.fullName }}
                   </a>
                 </div>
                 <div
                   class="info-btn"
-                  (mouseenter)="onInfoEnter($event, member)"
+                  (mouseenter)="onInfoEnter($event, player)"
                   (mouseleave)="onInfoLeave()"
                 >
                   <mat-icon class="info-icon">info_outline</mat-icon>
                 </div>
               </td>
 
-              <td class="text-muted">{{ member.position }}</td>
-              <td class="text-muted">{{ member.age }}</td>
-              <td class="text-muted">{{ member.nationalityFlag }} {{ member.nationality }}</td>
+              <td class="text-muted">{{ player.position }}</td>
+              <td class="text-muted">{{ player.height }}</td>
+              <!-- <td class="text-muted">{{ member.nationalityFlag }} {{ member.nationality }}</td> -->
 
-              <td class="fitness-cell">
+              <!-- <td class="fitness-cell">
                 @if (member.fitness !== undefined) {
                   <div class="fitness-bar-wrap">
                     <div class="fitness-bar">
@@ -61,9 +61,9 @@
                 } @else {
                   <span class="text-muted">N/A</span>
                 }
-              </td>
+              </td> -->
 
-              <td>
+              <!-- <td>
                 @if (member.form && member.form.length > 0) {
                   <div class="form-badges">
                     @for (r of member.form; track $index) {
@@ -73,13 +73,13 @@
                 } @else {
                   <span class="text-muted">N/A</span>
                 }
-              </td>
+              </td> -->
 
-              <td>
+              <!-- <td>
                 <span class="status-badge" [ngClass]="getStatusClass(member.status)">
                   {{ member.status }}
                 </span>
-              </td>
+              </td> -->
             </tr>
           }
         </tbody>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Injector } from '@angular/core';
+import { Component, OnDestroy, Injector, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,6 +10,8 @@ import { Overlay, OverlayRef, OverlayModule } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { PlayerDialog, PLAYER_POPUP_DATA } from '../players/player-dialog/player-dialog';
 import { RouterLink } from '@angular/router';
+import { TeamService } from '../../core/services/team.services';
+import { Team, Player } from '../../shared/entities';
 
 export interface SquadMember {
   id: number;
@@ -67,15 +69,25 @@ export interface PlayerDetail {
   templateUrl: './squad.html',
   styleUrl: './squad.scss',
 })
-export class Squad implements OnDestroy {
+export class Squad implements OnDestroy, OnInit {
   private overlayRef: OverlayRef | null = null;
   private hoverTimer: any = null;
   private closeTimer: any = null;
+  team!: Team;
 
   constructor(
     private overlay: Overlay,
     private injector: Injector,
+    private teamService: TeamService,
   ) {}
+
+  ngOnInit(): void {
+    this.teamService.getTeamById(1).subscribe({
+      next: (data) => (this.team = data),
+      error: (err) => console.error(err),
+      complete: () => console.log('Team = ', this.team),
+    });
+  }
 
   members: SquadMember[] = [
     {
@@ -212,7 +224,7 @@ export class Squad implements OnDestroy {
     return this.members;
   }
 
-  onInfoEnter(event: MouseEvent, member: SquadMember): void {
+  onInfoEnter(event: MouseEvent, player: Player): void {
     clearTimeout(this.closeTimer);
 
     if (this.overlayRef) return;
@@ -245,8 +257,8 @@ export class Squad implements OnDestroy {
       });
 
       const injector = this.createInjector({
-        member,
-        detail: this.playerDetails[member.id] ?? null,
+        player,
+        detail: this.playerDetails[1] ?? null,
       });
       const portal = new ComponentPortal(PlayerDialog, null, injector);
       const ref = this.overlayRef.attach(portal);
@@ -310,7 +322,8 @@ export class Squad implements OnDestroy {
     return map[result] ?? '';
   }
 
-  toSlug(name: string): string {
-    return name.toLowerCase().replace(/\s+/g, '-');
+  toSlug(name: string | undefined): string {
+    console.log('slug: ', name);
+    return (name ?? '').toLowerCase().replace(/\s+/g, '-');
   }
 }

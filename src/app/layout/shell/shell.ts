@@ -41,8 +41,6 @@ export class Shell {
     { label: 'Calendário', route: '/calendar' },
     { label: 'Treinos', route: '/training' },
     { label: 'Estatísticas', route: '/statistics' },
-    { label: 'Clube', route: '/club' },
-    { label: 'Admin', route: '/admin' },
   ];
 
   constructor(private router: Router) {
