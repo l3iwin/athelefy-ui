@@ -1,10 +1,9 @@
 // AUTO-GENERATED — não editar manualmente
-// Fonte: Player.java
+// Fonte: PlayerDTO.java
 
-import { Users } from './users.model';
-import { Team } from './team.model';
+import { UsersDTO } from './users-dto.model';
 
-export interface Player {
+export interface PlayerDTO {
   id?: number;
   fullName?: string;
   position?: string;
@@ -14,6 +13,5 @@ export interface Player {
   height?: string;
   dateBirth?: string;
   nationality?: string;
-  users?: Users;
-  teams?: Team[];
+  usersDTO?: UsersDTO;
 }

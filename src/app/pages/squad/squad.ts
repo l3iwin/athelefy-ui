@@ -10,8 +10,9 @@ import { Overlay, OverlayRef, OverlayModule } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { PlayerDialog, PLAYER_POPUP_DATA } from '../players/player-dialog/player-dialog';
 import { RouterLink } from '@angular/router';
-import { TeamService } from '../../core/services/team.services';
+import { PlayerService } from '../../shared/services';
 import { Team, Player } from '../../shared/entities';
+import { Utils } from '../../core/services/utils';
 
 export interface SquadMember {
   id: number;
@@ -28,7 +29,6 @@ export interface SquadMember {
   status: 'Available' | 'Injured' | 'Suspended' | 'Active';
   avatar: string;
 }
-
 export interface CareerEntry {
   club: string;
   period: string;
@@ -73,19 +73,20 @@ export class Squad implements OnDestroy, OnInit {
   private overlayRef: OverlayRef | null = null;
   private hoverTimer: any = null;
   private closeTimer: any = null;
-  team!: Team;
+  players!: Player[];
 
   constructor(
     private overlay: Overlay,
     private injector: Injector,
-    private teamService: TeamService,
+    private playerService: PlayerService,
+    public utils: Utils,
   ) {}
 
   ngOnInit(): void {
-    this.teamService.getTeamById(1).subscribe({
-      next: (data) => (this.team = data),
+    this.playerService.getPlayersByTeamId(1).subscribe({
+      next: (data) => (this.players = data),
       error: (err) => console.error(err),
-      complete: () => console.log('Team = ', this.team),
+      complete: () => console.log('Team = ', this.players),
     });
   }
 
@@ -219,10 +220,6 @@ export class Squad implements OnDestroy, OnInit {
       ],
     },
   };
-
-  get filteredMembers(): SquadMember[] {
-    return this.members;
-  }
 
   onInfoEnter(event: MouseEvent, player: Player): void {
     clearTimeout(this.closeTimer);

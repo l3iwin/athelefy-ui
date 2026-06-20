@@ -15,13 +15,13 @@
             <th>Position</th>
             <th>Age</th>
             <th>Nationality</th>
-            <th>Fitness</th>
+            <!-- <th>Fitness</th>
             <th>Form</th>
-            <th>Status</th>
+            <th>Status</th> -->
           </tr>
         </thead>
         <tbody>
-          @for (player of team.players; track player.id) {
+          @for (player of players; track player.id) {
             <tr class="squad-row">
               <td class="player-cell">
                 <div class="player-info">
@@ -43,8 +43,10 @@
               </td>
 
               <td class="text-muted">{{ player.position }}</td>
-              <td class="text-muted">{{ player.height }}</td>
-              <!-- <td class="text-muted">{{ member.nationalityFlag }} {{ member.nationality }}</td> -->
+              <td class="text-muted">
+                {{ player.dateBirth ? utils.getAgeOfDateOfBirth(player.dateBirth) : '-' }}
+              </td>
+              <td class="text-muted">{{ player.nationality }}</td>
 
               <!-- <td class="fitness-cell">
                 @if (member.fitness !== undefined) {
